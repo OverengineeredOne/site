@@ -1,1 +1,29 @@
-# site
+# Overengineered Web Server
+
+This is used as the main web server for overengineered.one.
+
+Overengineered uses Rocket for the web backend and a yew app for the front end.
+
+
+# User Guides
+
+Currently rust is required to be installed. A docker image is coming.
+
+## Baremetal installation and running
+
+A simple shell script is included to build and run the server.
+Linux is currently the only supported platform.
+
+```
+./serve.sh
+```
+
+## Configuration
+
+Environment variables can be used to set the default address and port.
+
+## Deploying
+
+There is no container orchestration set up. Currently you are required to ssh into the cloud vm.
+Use git to update to remote then run 
+
