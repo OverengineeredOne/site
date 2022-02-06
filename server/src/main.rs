@@ -18,8 +18,10 @@ async fn root() -> content::Html<String> {
                     <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>
                     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
                     <title>Overengineered</title>
+                    <base href=\"/\" />
+                    <link rel=\"manifest\" href=\"./manifest.webmanifest\"/>
                     <script>
-                        window.onload = () =-> {
+                        window.onload = () => {
                             'use strict';
                             navigator.serviceWorker.register('./sw.js')
                         }
@@ -27,9 +29,10 @@ async fn root() -> content::Html<String> {
                     <script type=\"module\">
                         import init, { run } from './about_client.js';
                         const start = async() => {
-                            await init('./about_client.wasm');
-                            run()
+                            await init('./about_client_bg.wasm');
+                            run();
                         };
+                        start();
                     </script>
                 </head>
                 <body>
@@ -41,7 +44,52 @@ async fn root() -> content::Html<String> {
     )
 }
 
+mod static_files {
+    use rocket::fs::{relative, NamedFile};
+    use std::path::Path;
+
+    #[get("/manifest.webmanifest")]
+    pub async fn manifest() -> Option<NamedFile> {
+        let path = Path::new(relative!("../about_client/manifest.webmanifest"));
+        NamedFile::open(path).await.ok()
+    }
+
+    #[get("/sw.js")]
+    pub async fn service_worker() -> Option<NamedFile> {
+        let path = Path::new(relative!("../about_client/js/sw.js"));
+        NamedFile::open(path).await.ok()
+    }
+
+    #[get("/about_client.js")]
+    pub async fn client() -> Option<NamedFile> {
+        let path = Path::new(relative!("../about_client/pkg/about_client.js"));
+        NamedFile::open(path).await.ok()
+    }
+
+    #[get("/about_client_bg.wasm")]
+    pub async fn wasm() -> Option<NamedFile> {
+        let path = Path::new(relative!("../about_client/pkg/about_client_bg.wasm"));
+        NamedFile::open(path).await.ok()
+    }
+
+    #[get("/bundle")]
+    pub async fn bundle() -> Option<NamedFile> {
+        let path = Path::new(relative!("../about_client/js/about_client.js"));
+        NamedFile::open(path).await.ok()
+    }
+}
+
 #[rocket::launch]
 async fn rocket() -> _ {
-    rocket::build().mount(&config::ROCKET::BASE_URL(), rocket::routes![root,])
+    rocket::build().mount(
+        &config::ROCKET::BASE_URL(),
+        rocket::routes![
+            root,
+            static_files::service_worker,
+            static_files::manifest,
+            static_files::client,
+            static_files::wasm,
+            static_files::bundle
+        ],
+    )
 }

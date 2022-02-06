@@ -4,7 +4,6 @@ This is used as the main web server for overengineered.one.
 
 Overengineered uses Rocket for the web backend and a yew app for the front end.
 
-
 # User Guides
 
 Currently rust is required to be installed. A docker image is coming.
