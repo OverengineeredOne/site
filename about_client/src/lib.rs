@@ -1,6 +1,11 @@
 #[macro_use]
 extern crate cfg_if;
 extern crate wasm_bindgen;
+extern crate wasm_logger;
+extern crate web_sys;
+extern crate ybc;
+extern crate yew;
+extern crate yew_router;
 
 mod app;
 

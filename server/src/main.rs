@@ -19,6 +19,7 @@ async fn root() -> content::Html<String> {
                     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
                     <title>Overengineered</title>
                     <base href=\"/\" />
+                    <link rel=\"stylesheet\" href=\"css/styles.css\"/>
                     <link rel=\"manifest\" href=\"./manifest.webmanifest\"/>
                     <script>
                         window.onload = () => {
@@ -54,6 +55,11 @@ mod static_files {
         NamedFile::open(path).await.ok()
     }
 
+    #[get("/css/styles.css")]
+    pub async fn css() -> Option<NamedFile> {
+        let path = Path::new(relative!("../about_client/css/styles.css"));
+        NamedFile::open(path).await.ok()
+    }
     #[get("/sw.js")]
     pub async fn service_worker() -> Option<NamedFile> {
         let path = Path::new(relative!("../about_client/js/sw.js"));
@@ -86,6 +92,7 @@ async fn rocket() -> _ {
         rocket::routes![
             root,
             static_files::service_worker,
+            static_files::css,
             static_files::manifest,
             static_files::client,
             static_files::wasm,
