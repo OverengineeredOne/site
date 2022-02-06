@@ -15,9 +15,25 @@ async fn root() -> content::Html<String> {
         "<!DOCKTYPE html>
             <html>
                 <head>
+                    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>
+                    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+                    <title>Overengineered</title>
+                    <script>
+                        window.onload = () =-> {
+                            'use strict';
+                            navigator.serviceWorker.register('./sw.js')
+                        }
+                    </script>
+                    <script type=\"module\">
+                        import init, { run } from './about_client.js';
+                        const start = async() => {
+                            await init('./about_client.wasm');
+                            run()
+                        };
+                    </script>
                 </head>
                 <body>
-                    Hello
+                    Hello from raw html
                 </body>
             </html>
         "

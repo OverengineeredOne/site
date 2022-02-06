@@ -14,6 +14,14 @@ Currently rust is required to be installed. A docker image is coming.
 A simple shell script is included to build and run the server.
 Linux is currently the only supported platform.
 
+First give execute permissions.
+
+```
+chmod +x ./serve.sh
+```
+
+Then you can build and launch.
+
 ```
 ./serve.sh
 ```
@@ -21,6 +29,10 @@ Linux is currently the only supported platform.
 ## Configuration
 
 Environment variables can be used to set the default address and port.
+
+```
+ROCKET_ADDRESS=0.0.0.0 ROCKET_PORT=443 ./serve.sh
+```
 
 ## Deploying
 
