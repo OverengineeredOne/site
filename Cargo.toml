@@ -1,6 +1,6 @@
 [workspace]
 
 members = [
-	"about_client",
+	"overengineered-client",
 	"server",
 ]

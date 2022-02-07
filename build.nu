@@ -1,1 +1,1 @@
-cd about_client; wasm-pack build --release --target web; cd ..
+cd overengineered-client; trunk build; cd ..
